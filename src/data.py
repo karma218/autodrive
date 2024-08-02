@@ -17,6 +17,7 @@ class Data:
                 if not data_row.empty:
                     angle = data_row['angle'].iloc[0]
                     self.data.append((filename, angle))
+        print(f"Total samples collected: {len(self.data)}")
 
     def load_image(self, filename):
         image = cv2.imread(os.path.join(self.path, filename))
@@ -38,7 +39,7 @@ class Data:
             )
         )
         if shuffle:
-            dataset = dataset.shuffle(buffer_size=max(1, len(data)))  # Ensure buffer_size is greater than zero
+            dataset = dataset.shuffle(buffer_size=len(data))  # Ensure buffer_size is appropriate
         if repeat:
             dataset = dataset.repeat()  # Repeat the dataset indefinitely
         dataset = dataset.batch(batch_size)
@@ -47,8 +48,11 @@ class Data:
 
     def training_data(self, batch_size):
         data_train = self.data[:int((len(self.data) * 3) / 4)]
+        print(f"Training samples: {len(data_train)}")
         return self.create_dataset(data_train, batch_size)
 
     def validation_data(self, batch_size):
         data_val = self.data[int((len(self.data) * 3) / 4):]
-        return self.create_dataset(data_val, batch_size, shuffle=False, repeat=False)
+        print(f"Validation samples: {len(data_val)}")
+        return self.create_dataset(data_val, batch_size, shuffle=False, repeat=True)  # Set repeat to True for validation as well
+
