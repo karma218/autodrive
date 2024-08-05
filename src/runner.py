@@ -29,10 +29,10 @@ def run_training():
 
     try:
         name = "test"
-        batch_size = 32  # Reduced batch size
+        batch_size = 64  # Reduced batch size
         epochs = 50
-        steps_per_epoch = 51
-        validation_steps = 17
+        steps_per_epoch = 30
+        validation_steps = 15
 
         history = model.train(name=name, data=data, epochs=epochs, steps=steps_per_epoch, steps_val=validation_steps, batch_size=batch_size)
         print(history)
